@@ -1,0 +1,13 @@
+#!/bin/sh
+module="resume"
+device="resume"
+
+# invoke rmmod with all arguments we got
+/sbin/rmmod $module || exit 1
+
+# Remove stale nodes
+echo "                                                                                          "
+echo " Thanks for your reading, I really hope to have an opportunity to cowork with your company"
+echo "  "
+rm -f /dev/${device}
+

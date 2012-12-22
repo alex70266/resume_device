@@ -1,0 +1,45 @@
+#!/bin/sh
+
+module="resume.ko"
+
+
+device="resume"
+group="root"
+mode="664"
+
+
+
+/sbin/insmod -f $module || exit 1
+
+major=`cat /proc/devices | awk "\\$2==\"$device\" {print \\$1}"`
+
+#echo "Major number = $major"
+
+echo "   "
+echo " I was assigned major number $major ,with creating Char Device /dev/${device}"
+echo "   "
+echo " 1.you can use echo \"(your name)\" > /dev/${device} , sent your name to this Char device"
+echo " 2.You can use cat /dev/${device} to read message "   
+echo " 3.You can use ./dev_unload to release the char device driver and remove the Device file"
+echo " 4.You can use clear directory to clean the name you echo to /dev/${device}"
+echo "   "
+echo " PS1:In GUI mode,You have to use ctrl+alt+T  to call up another terminal"
+echo "     and use \"dmesg | tail -5 \" to read driver kernel message   "
+echo "     when you \"echo\" or \"cat\" /dev/${device}                      "
+echo "   "
+echo " PS2:You Must echo the device before cat it, If you cat the device without echo your name "
+echo "     The Device will be interrupt to stop until your echo it"
+echo "   "
+
+
+rm -f /dev/${device}
+mknod /dev/${device} c $major 0
+
+chgrp $group /dev/${device}
+chmod $mode  /dev/${device}
+
+
+
+
+
+
